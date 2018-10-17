@@ -7,6 +7,7 @@ library(RcmdrMisc)
 
 #2A
 soy <- read_csv("snapbean.csv")
+soy <- clean_names(soy)
 soy$sowdate <- as.factor(soy$sowdate)
 soy$variety <- as.factor(soy$variety)
 
@@ -15,22 +16,22 @@ soy %>%
   geom_boxplot()+
   geom_point()
 soy %>% 
-  ggplot(aes(x = sowdate, y = Yield))+
+  ggplot(aes(x = sowdate, y = yield))+
   geom_boxplot()+
   geom_point()
-plotmeans(Yield~sowdate, data = soy)
-plotmeans(Yield~variety, data = soy)
-interaction.plot(soy$sowdate, soy$variety, soy$Yield)
-interaction.plot(soy$variety, soy$sowdate, soy$Yield)
+plotmeans(yield~sowdate, data = soy)
+plotmeans(yield~variety, data = soy)
+interaction.plot(soy$sowdate, soy$variety, soy$yield)
+interaction.plot(soy$variety, soy$sowdate, soy$yield)
 
 
 #2B
 
-my_aov <- aov(soy$Yield~soy$sowdate*soy$variety)
+my_aov <- aov(soy$yield~soy$sowdate*soy$variety)
 plot(my_aov)
 
-numSummary(soy$Yield, groups=soy$sowdate)
-numSummary(soy$Yield, groups=soy$variety)
+numSummary(soy$yield, groups=soy$sowdate)
+numSummary(soy$yield, groups=soy$variety)
 
 #2C
 anova(my_aov)
