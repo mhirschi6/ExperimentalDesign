@@ -134,7 +134,8 @@ kinds of conclusions you hope to draw and the kind of evidence you plan to gathe
   partition - a partition of the observations is a way of sorting them into groups.
   factor - a meaningful partition of the observations. 
   
-  Test for factors - observations in the partition groups have something in common?
+  Test for factors - observations in the partition groups have something in 
+  common?
     does it make sense to compare the means for the parition groups?
     if you interchange the groups of observations, does it affect the 
     interpretation of the data?
@@ -156,7 +157,22 @@ kinds of conclusions you hope to draw and the kind of evidence you plan to gathe
   
   df = number of levels for the factor - sum of df for all outside factors. 
   
-   
+  
+  null hypothesis
+  H0: alpha1 = alpha2 = alpha3 = alphan = 0
+  
+  fishers lsd most narrow confidence interval, signficant f-test test pairwise 
+  comparisons, more concerned about mission real differences, less concerned about 
+  false alarms. screening study
+  
+  tukeys HSD between scheffe and lsd, you want to test pair wise comparisons of 
+  levels, keep family wise change. looking at all pair wise comparisons. 
+  
+  scheffe widest(usually), planned a specific set of comparisons before you
+  gather your data. post hoc comparisons. 
+  
+  bonferroni narrow than tukey if k is small limited number of a priori
+  comparisons. 
   
     
   
