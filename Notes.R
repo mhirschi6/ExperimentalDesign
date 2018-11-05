@@ -177,6 +177,10 @@ kinds of conclusions you hope to draw and the kind of evidence you plan to gathe
     
   
   
+  randomized latin squared. 
+  randomly re-order the rows
+  randomly re-order the columns. 
+  randomly assign the treatments to the letters, a,b,c, etc 
   
   
   
