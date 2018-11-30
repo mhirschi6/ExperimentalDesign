@@ -1,0 +1,77 @@
+---
+title: "SPRM_Project"
+author: "Matt Hirschi"
+date: "November 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(mosaic)
+library(car)
+library(janitor)
+dat <- read_csv("basketball2.csv")
+dat <- clean_names(dat)
+dat$person <- as.factor(dat$person)
+dat$type <- as.factor(dat$type)
+dat$x_u_feff_distance <- as.factor(dat$x_u_feff_distance)
+```
+
+## Question
+
+Does the distance and type of shot effect how many baskets they make? 
+
+Null: freethrow = threepointer
+Alternative: freethrow not equal to threepointer
+
+Null: p1=p2=p3=p4=p5=p6=p7=p8
+Alternative: At least one is different
+
+Null: underhand = regular
+Alternative: not equal to eachother
+
+
+I assigned each shooter a number between 1-8 and then used a random number generator to choose the order they shot and which shot they used as well what distance they shot from. 
+
+The factors were the distance they shot from, the person, and the type of shot they shot. The response was how many shots they made. 
+
+## Numerical Descriptive Statistics
+
+```{r}
+favstats(dat$made ~ dat$x_u_feff_distance)
+favstats(dat$made ~ dat$person)
+favstats(dat$made ~ dat$type)
+```
+
+
+## Descriptive Graphics
+
+```{r}
+dat %>%
+  ggplot(aes(x = person, y = made))+
+  geom_boxplot()
+
+dat %>% 
+  ggplot(aes(x = type, y = made))+
+  geom_boxplot()
+```
+
+## Inferential Statistics 
+
+Based on the p-value nothing is significant and we accept all the null hypothesis' that everything is equal and we find no significance within the factors or the blockings. 
+```{r}
+model <- aov(made ~ x_u_feff_distance + person + type + x_u_feff_distance:person, data = dat)
+
+model1 <- aov(made ~ x_u_feff_distance + Error(person) + type + x_u_feff_distance:person,
+             data = dat)
+
+summary(model1)
+
+plot(model, which = 1:2)
+```
+
+
+## Conclusion
+
+I think I got the results I did because everyone was quite good at basketball and were on their game this day. I would have found random people to do this experiment instead of people I knew and their skill level. 
