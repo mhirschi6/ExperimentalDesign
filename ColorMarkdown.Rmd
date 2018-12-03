@@ -1,0 +1,114 @@
+---
+title: "Color Response Project"
+author: "Dillon Isaacson"
+date: "November 30, 2018"
+output:
+  html_document:
+    code_folding: hide
+    theme: united
+  pdf_document: default
+---
+
+```{r, include = FALSE}
+library(mosaic)
+library(pander)
+library(knitr)
+library(DT)
+library(janitor)
+library(MASS)
+library(tidyverse)
+library(readr)
+
+color <- read_csv("color data.csv")
+color <- clean_names(color)
+#color$color <- as.factor(color$color)
+
+```
+
+# Color Response Project {.tabset}
+
+## Question
+
+For our project we wanted to see if exposure to a specific color impacted a person's reaction time/cognitive ability. We chose this after playing the "Shapesplosion" game in class and we thought it seemed like an awesome idea.
+
+Our factors of interest in this are color and gender. Our hypothesis for these are as follows:
+
+### Color
+
+$H_0: \beta_i = 0; \beta \text{ is the different effects for our color groups: Blue, Red and the Control}$
+
+$H_a: \text{At least one of the } \beta_i \text{ is different.}$
+
+### Gender
+
+$H_0: \phi_j = 0; \phi \text{ is the different effects for our genders: Male and Female (THERE ARE ONLY TWO GENDERS!)}$
+
+$H_a: \text{At least one of the } \phi_j \text{ is different.}$
+
+### Interaction
+
+$H_0: \beta_i \phi_j = 0$
+
+$H_a: \text{At least one of the interaction terms is different.}
+
+For our data collection, we used Excel to assign a random color to person numbered 1:60. The colors were Control (no color), Blue, or Red. We had 20 people in each color group (10 Males and 10 Females). People were assigned a color randomly as Steven would grab individuals as they walked by at which point in time the color was assigned based on which number of person they were. Our sample size ended up being 60 to keep a balanced design.
+
+
+
+```{r}
+DT::datatable(color[1:4])
+```
+
+## Analysis
+
+As we begin this analysis, we want to look at the favstats and a boxplots of each group so the first group you see below is when color is on the x axis and the second is with gender on the x axis.
+
+```{r, warning = FALSE}
+#Favstats of Color
+pander(favstats(time ~ color, data = color))
+
+ggplot(data = color, aes(x=color, y = time)) + 
+  geom_boxplot() + 
+  geom_point()
+
+#Favstats of Gender
+pander(favstats(time ~ gender, data = color))
+
+ggplot(data = color, aes(x=gender, y = time)) + 
+  geom_boxplot() + 
+  geom_point()
+```
+
+Looking at the plots, you can see that where gender is concerned the variability is higher however there isn't really a difference in means. However, with the color data the variability is much lower however the means appear to be a little different so there may be something going on there. Next, let's check the interaction plot to see if there is more of a reason to suspect an interaction.
+
+```{r}
+interaction.plot(color$gender, color$color, color$time)
+```
+
+OK, it appears that we do have an interaction especially with the control so lastly let's check the plots for our assumptions.
+
+```{r}
+color.lm <- lm(time ~ color * gender, data = color)
+
+plot(color.lm, which = 1:2)
+```
+
+Our assumptions are met. Normallity could be a litle better, there may be the smallest amount of a left skew however not enough to be concerned about and the residuals have a slight amount of a microphone shape however we feel fine in moving forward with this and saying that constant variance is met (thank you 425).
+
+## Conclusion
+
+```{r}
+pander(anova(color.lm))
+```
+
+Our degrees of freedom, as show in the table, are 2, 1, 2, and 54 for the residuals. We've done this analysis using the $\alpha = 0.05$ for our level of significance. Based on that, nothing appears to be significant which means we have no reason to suspect that any of the effects are significant. That said, color is very small (p-value of 0.05392) and the F statistic is 3.084 so we've decided that color is likely a significant factor and if we had more data we thinik that this would come through.
+
+In retrospect, a few things we would have changed are the colors we used-our game used blue shapes and we used about the same shade of blue so we could have used green or something. Also, we feel like doing a grey scale for the game (making it black and white) so that people didn't go from one color to another color. Lastly, our sample size is fairly small (larger than some projects, but it could have been bigger) so a larger sample size could have been better. Using a power analysis for a desired power to establish sample size would be beneficial.
+
+## References
+
+1. Klein, G. S. (1964). Semantic power measured through the interference of words with color-naming. The American journal of psychology, 77(4), 576-588.
+
+2. Breitmeyer, B. G., & Breier, J. I. (1994). Effects of background color on reaction time to stimuli varying in size and contrast: Inferences about human M channels. Vision Research, 34(8), 1039-1045.
+
+3. Breitmeyer, B. G., & Ogmen, H. (2000). Recent models and findings in visual backward masking: A comparison, review, and update. Perception & psychophysics, 62(8), 1572-1595.
