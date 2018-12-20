@@ -1,0 +1,17 @@
+﻿type_of_shot,distance,location,shots_made
+regular,freethrow,front,6
+regular,freethrow,front,4
+regular,freethrow,side,6
+regular,freethrow,side,8
+regular,three,front,4
+regular,three,front,8
+regular,three,side,6
+regular,three,side,1
+underhand,freethrow,front,10
+underhand,freethrow,front,5
+underhand,freethrow,side,9
+underhand,freethrow,side,8
+underhand,three,front,4
+underhand,three,front,5
+underhand,three,side,5
+underhand,three,side,2

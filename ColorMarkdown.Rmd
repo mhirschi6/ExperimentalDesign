@@ -1,12 +1,10 @@
 ---
 title: "Color Response Project"
-author: "Dillon Isaacson"
+author: "Dillon Isaacson, Steven Garcia, Matt Hirschi"
 date: "November 30, 2018"
 output:
-  html_document:
-    code_folding: hide
-    theme: united
-  pdf_document: default
+  word_document: default
+  always_allow_html: yes
 ---
 
 ```{r, include = FALSE}

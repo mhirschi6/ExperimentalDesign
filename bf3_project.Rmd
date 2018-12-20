@@ -1,0 +1,103 @@
+---
+title: "CB3_Project"
+author: "Matt Hirschi"
+date: "December 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(mosaic)
+library(car)
+library(MASS)
+```
+
+```{r}
+dat <- read_csv("basketball3.csv")
+
+```
+
+### Question
+
+Is there a difference in the shots made by the type of shot they take, the distance they shoot from or the location on the basketball court or an interaction between 2 of the factors or all 3?
+My Hypothesis:
+
+Ho: The mean for the levels of Type of Shot are equal.
+Ha: At least one mean is different.
+Ho: The mean for the levels of Distance are equal.
+Ha: At least one mean is different.
+Ho: The mean for the levels of Location are equal.
+Ha: At least one mean is different.
+Ho: No interaction between Type of Shot and Distance.
+Ha: Interaction between Type of Shot and Distance
+Ho: No interaction between Type of shot and Location.
+Ha: Interaction between Type of Shot and Location.
+Ho: No interaction between Distance and Location.
+Ha: Interaction between Distance and Location.
+Ho: No interaction between Type of Shot, Location and Distance.
+Ha: Interaction between Type of Shot, Location, and Distance.
+
+### Randomization
+
+I randomized by making 3 different arrays for the type of shot, the distance, and the location. I assigned Regular Shot 1 and Underhand 2, FreeThrow 1 and 3 pointer 2, and Front 1 and Side 2 and put them through a random number generator to assign how each individual shot until I had all of my data. The factors are Type of Shot, Distance and Location and the Response is Shots Made. 
+
+
+### Descriptive Statistics
+
+```{r}
+dat %>%
+  ggplot(aes(x = type_of_shot, y = shots_made))+
+  geom_point()+
+  geom_boxplot()
+
+dat %>%
+  ggplot(aes(x = distance, y = shots_made))+
+  geom_point()+
+  geom_boxplot()
+dat %>%
+  ggplot(aes(x = location, y = shots_made))+
+  geom_point()+
+  geom_boxplot()
+```
+
+Based on each Box Plot we can determine that the means will probably be different for each of the main effects. 
+
+
+```{r}
+favstats(shots_made ~ type_of_shot, data = dat)
+favstats(shots_made ~ distance, data = dat)
+favstats(shots_made ~ location, data = dat)
+```
+ 
+The standard deviations are all close enough together to move onto the making of a model and testing for signicance. 
+
+
+### Inferential Statistics
+
+The assumptions have been met. The residuals follow the qqplot pretty well to show normality and the residuals vs fitted plot shows constant variance so we will move on with the model. 
+
+```{r}
+model <- lm(shots_made ~ type_of_shot * distance * location, 
+            data = dat)
+plot(model, which = 1:2)
+
+
+summary(model)
+```
+
+
+
+
+
+After running the Anova model and looking at the summary we have sufficient evidence to reject the null hypothesis that the means are not different with the type of shot with a p-value of 0.0154. With all other hypothesis we fail to reject the null hypothesis with location distance and all interactions. 
+
+### Decision Rule
+
+The general conclusion was that there was no different in the distance location or any of the interactions just how the shot was taken that show a significance of how many shots were made. 
+
+I think I got the results I did because everyone had already been playing basketball for a while and was warmed up and knew that the experiment was coming. 
+
+I would have made them do this study cold and not warmed up and asked random strangers instead of people I knew. 
+
+The follow up studies I would do would be to choose people at random instead of do a convient sample of people I already know to participate. 
